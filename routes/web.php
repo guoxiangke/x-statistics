@@ -39,15 +39,18 @@ Route::get('/test/ip', function (Request $request) {
     dd($ip);
 });
 
-Route::get('/g/{targetUrl}', function (Request $request, $targetUrl) {
-    // $target = $request->query('target');
+// 127.0.0.1:8000/g?target=https://google.com/404?query=s&tag=test
+// 127.0.0.1:8000/g?target=https://google.com/404?query=s%26tag=test
+Route::get('/g', function (Request $request) {
+    $target = $request->query('target');
     $status = 302;
     $headers = ['referer' => $target];
-    $ip = $request->header('x-forwarded-for')??$request->ip();
 
-    XstatisticsLinkQueue::dispatchAfterResponse($ip,$url,$data);
+    // TODO: 统计数据 GA or influxdb！ or Redis counts
+    // $ip = $request->header('x-forwarded-for')??$request->ip();
+    // XstatisticsLinkQueue::dispatchAfterResponse($ip, $url, $data);
+    
     // table:
-
     // IP: 127.0.0.1 target: https://go.url.xxx count=1
     return redirect()->away($target, $status, $headers);
 });
