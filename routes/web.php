@@ -26,3 +26,8 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+
+Route::get('/test/db', function () {
+    dd(\App\Models\User::first()->get()->toArray());
+});
