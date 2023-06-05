@@ -39,18 +39,19 @@ Route::get('/test/ip', function (Request $request) {
     dd($ip);
 });
 
-// 127.0.0.1:8000/g?target=https://google.com/404?query=s&tag=test
-// 127.0.0.1:8000/g?target=https://google.com/404?query=s%26tag=test
-Route::get('/g', function (Request $request) {
-    $target = $request->query('target');
+// 防失联2重备案域名跳转链接 go.url/s=share
+// 127.0.0.1:8000/s?url=https://google.com/404?query=s&tag=test
+// 127.0.0.1:8000/s?url=https://google.com/404?query=s%26tag=test
+Route::get('/s', function (Request $request) {
+    $url = $request->query('url');
     $status = 302;
-    $headers = ['referer' => $target];
+    $headers = ['referer' => $url];
 
     // TODO: 统计数据 GA or influxdb！ or Redis counts
     // $ip = $request->header('x-forwarded-for')??$request->ip();
     // XstatisticsLinkQueue::dispatchAfterResponse($ip, $url, $data);
     
     // table:
-    // IP: 127.0.0.1 target: https://go.url.xxx count=1
-    return redirect()->away($target, $status, $headers);
+    // IP: 127.0.0.1 url: https://go.url.xxx count=1
+    return redirect()->away($url, $status, $headers);
 });
