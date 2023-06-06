@@ -65,9 +65,22 @@ Route::get('/redirect', function (Request $request) {
     // measurement/metric
     if(!isset($data['metric'])) $data['metric'] = 'connect';
     $metric = $data['metric'].",";unset($data['metric']); // ly-wechat
-    $tags = http_build_query($data, '', ',');// category=603,bot=4
+    // $tags = http_build_query($data, '', ',');// category=603,bot=4
+    $tags = $data;
 
-    $protocolLine = $metric.$tags.' count=1i,target="'.$target.'",ip="'.$ip.'"';
+    $fields = [];
+    $fields['count'] = 1;
+    $fields['host'] = $parts['host'];
+    $fields['target'] = $target;
+    $fields['ip'] = $ip;
+    // $fields = http_build_query($fields, '', ',');// category=603,bot=4
+    
+    $protocolLine = [
+        'name' => $metric,
+        'tags' => $tags,
+        'fields' => $fields
+    ];
+    // $protocolLine = $metric.$tags.' count=1i,target="'.$target.'",ip="'.$ip.'"';
     // ly-listen,category=603,bot=%E5%8F%8B4count=1i,target="ee230909.mp3"
     // TODO Statistics BY IP / BY target.
     // dd($protocolLine,$parts,$url,$ip);

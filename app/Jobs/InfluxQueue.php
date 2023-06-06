@@ -11,7 +11,6 @@ use Illuminate\Queue\SerializesModels;
 use InfluxDB2\Client;
 use InfluxDB2\WriteType as WriteType;
 use InfluxDB2\Model\WritePrecision as WritePrecision;
-use Illuminate\Support\Facades\Log;
 
 class InfluxQueue implements ShouldQueue
 {
@@ -46,7 +45,6 @@ class InfluxQueue implements ShouldQueue
 
         // $writeApi = $client->createWriteApi();
         $writeApi = $client->createWriteApi(["writeType" => WriteType::BATCHING, 'batchSize' => 1]);
-        Log::info(__CLASS__, [__LINE__, $this->protocolLine]);
         $writeApi->write($this->protocolLine);
         $client->close();
     }
