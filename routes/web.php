@@ -67,10 +67,10 @@ Route::get('/redirect', function (Request $request) {
     $metric = $data['metric'].",";unset($data['metric']); // ly-wechat
     // $tags = http_build_query($data, '', ',');// category=603,bot=4
     $tags = $data;
+    $tags['host'] = $parts['host'];
 
     $fields = [];
     $fields['count'] = 1;
-    $fields['host'] = $parts['host'];
     $fields['target'] = $target;
     $fields['ip'] = $ip;
     // $fields = http_build_query($fields, '', ',');// category=603,bot=4
